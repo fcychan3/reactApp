@@ -35,21 +35,14 @@ class ScrollToExample extends Component {
   }
   setActiveIndex = (val) => {
     this.state.active_index = val;
-    //console.log(this.state.active_index);
+    console.log(this.state.active_index);
   }
   scrollToIndex = (val) => {
     this.flatListRef.scrollToIndex({animated: false, index: val});
   }
-  scrollChangeIndex = (y_offset) =>{
-    //console.log(Math.abs(parseInt(y_offset/800)));
-    var offset_to_index = Math.abs(parseInt(y_offset/800));
-    if (!(offset_to_index == this.state.active_index)){
-        this.setActiveIndex(offset_to_index);
-        this.refreshScreen(offset_to_index);
-    }
-  }
+  
   activeDateStyle = (val) =>{
-    //console.log("Call Upadate Style : " + val );
+    console.log("Call Upadate Style : " + val );
     if (val == this.state.active_index){ 
       return{
         borderBottomWidth:3,
@@ -67,7 +60,7 @@ class ScrollToExample extends Component {
       <View style={styles.container}>
           {/* Static Top Row Bar */}
           <View style={{flexDirection: 'row'}}>
-            <ScrollView horizontal={true}style={{flex: 7 }, styles.buttons_container} >
+            <ScrollView onScroll={ (event) => console.log(event.nativeEvent.contentOffset.y)} horizontal={true}style={{flex: 7 }, styles.buttons_container} >
               <TouchableOpacity onPress={() => { this.setActiveIndex(0); this.scrollToIndex(0);this.refreshScreen(0);}} style={[styles.button_date_container,this.activeDateStyle(0)]}>
                 <Text>1/1</Text>
                 <Text>Day 1</Text>
@@ -87,7 +80,6 @@ class ScrollToExample extends Component {
           </View>
         {/* Scroll Menu */}
         <FlatList
-          onScroll={event => {this.scrollChangeIndex(event.nativeEvent.contentOffset.y)}}
           style={{ flex: 1 }}
           ref={(ref) => { this.flatListRef = ref; }}
           keyExtractor={item => item}
